@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>カルオラ オラクルカード</title>
   <style>
-    /* ベーススタイルと背景 */
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
       font-family: 'Hiragino Mincho ProN', serif;
@@ -15,58 +15,22 @@
       background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
     }
 
-
-    
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-    #buttonContainer {
-  margin-bottom: 4em; /* 黒帯が被らないように調整 */
-}
-
-    /* 星（ランダム配置） */
+    /* 星の演出 */
     .stars {
       position: absolute;
       background: white;
       border-radius: 50%;
-      animation: sparkle 2s infinite ease-in-out alternate;
       opacity: 0.8;
+      animation: sparkle 2s infinite ease-in-out alternate;
+      pointer-events: none;
     }
 
     @keyframes sparkle {
       from { opacity: 0.3; transform: scale(1); }
-      to { opacity: 1; transform: scale(1.4); }
+      to   { opacity: 1; transform: scale(1.4); }
     }
 
-    @keyframes shoot {
-      from {
-        transform: translate(0, 0) rotate(45deg);
-        opacity: 1;
-      }
-      to {
-        transform: translate(500px, -500px) rotate(45deg);
-        opacity: 0;
-      }
-    }
-
-
-#cardDisplay {
-  /* 既存のスタイルに追加してOK */
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-#cardDisplay.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-    
-    /* カード表示エリア */
+    /* カードエリア */
     #cardContainer {
       display: flex;
       justify-content: center;
@@ -75,18 +39,29 @@ html, body {
     }
 
     #cardDisplay {
-       display: none; 
-      max-width: 600px
+      display: none;
+      max-width: 600px;
+      padding: 2em;
+      background-color: rgba(255, 255, 255, 0.95);
       border-radius: 1em;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
       color: #222;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
-    /* ボタンの配置とスタイル */
+    #cardDisplay.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ボタンエリア */
     #buttonContainer {
       display: flex;
       justify-content: center;
-      margin: 2em 0;
+      margin: 2em 0 4em 0;
     }
 
     #drawButton {
@@ -104,21 +79,16 @@ html, body {
     #drawButton:hover {
       transform: scale(1.05);
     }
-
-
-    #cardContainer:empty {
-  display: none;
-}
-
   </style>
 </head>
 
 <body>
+  <!-- カードを表示 -->
   <div id="cardContainer">
     <div id="cardDisplay"></div>
-
   </div>
 
+  <!-- ボタン -->
   <div id="buttonContainer">
     <button id="drawButton" disabled>カードを引く</button>
   </div>
@@ -128,7 +98,7 @@ html, body {
     const cardDisplay = document.getElementById('cardDisplay');
     let cards = [];
 
-    // JSONカードデータを読み込む
+    // カードデータ読み込み
     fetch('data/cards.json')
       .then(response => {
         if (!response.ok) throw new Error('カードデータが見つかりません');
@@ -139,33 +109,23 @@ html, body {
         drawButton.disabled = false;
       });
 
-    // カードを引くボタンイベント
+    // ボタンクリックでカード表示
     drawButton.addEventListener('click', () => {
       const oneCard = cards[Math.floor(Math.random() * cards.length)];
 
       const html = `
-        <div style="
-          max-width: 600px;
-          margin: 3em auto;
-          padding: 2em;
-          border-radius: 1em;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-          background: white;
-          color: #222;
-        ">
-          <h2>${oneCard.title}</h2>
-          <p><strong>キーワード：</strong>${oneCard.keywords}</p>
-          <p>${oneCard.message}</p>
-          <p><strong>問い：</strong>${oneCard.question}</p>
-          <p><em>カテゴリー：${oneCard.category}</em></p>
-        </div>
+        <h2>${oneCard.title}</h2>
+        <p><strong>キーワード：</strong>${oneCard.keywords}</p>
+        <p>${oneCard.message}</p>
+        <p><strong>問い：</strong>${oneCard.question}</p>
+        <p><em>カテゴリー：${oneCard.category}</em></p>
       `;
 
       cardDisplay.innerHTML = html;
-      cardDisplay.style.display = "block"; // 
+      cardDisplay.classList.add("show");
     });
 
-    // 星の生成
+    // 星を生成（120個）
     for (let i = 0; i < 120; i++) {
       const star = document.createElement('div');
       star.classList.add('stars');
@@ -177,13 +137,6 @@ html, body {
       star.style.animationDuration = `${1 + Math.random() * 3}s`;
       document.body.appendChild(star);
     }
-
-
-cardDisplay.innerHTML = html;
-cardDisplay.style.display = "block";
-cardDisplay.classList.add("show");
-
-    
   </script>
 </body>
 </html>
