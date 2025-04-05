@@ -1,92 +1,35 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>構造観察型オラクル《カルオラ》</title>
-  <style>
-    body {
-      font-family: 'Noto Sans JP', sans-serif;
-      background: #f7f2ea;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      padding: 2rem;
-      max-width: 400px;
-      text-align: center;
-      position: relative;
-    }
-    .card-title {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
-    .keywords {
-      font-size: 0.9rem;
-      color: #888;
-      margin-bottom: 1rem;
-    }
-    .message, .question {
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      white-space: pre-wrap;
-    }
-    button {
-      background-color: #444;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #333;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>カルオラ オラクルカード</title>
 </head>
 <body>
-  <div class="card" id="card">
-    <div class="card-title" id="cardTitle">🔮 カードを引いてください</div>
-    <div class="keywords" id="cardKeywords"></div>
-    <div class="message" id="cardMessage"></div>
-    <div class="question" id="cardQuestion"></div>
+
+  <div id="card">
+    <!-- カードがここに表示される -->
   </div>
-  <br />
-  <button onclick="drawCard()">カードを引く</button>
+
+  <button id="drawButton">カードを引く</button>
 
   <script>
-    const cards = [
-      {
-        title: "《抑圧》",
-        keywords: "怒り／沈黙／無力化",
-        message: "言えなかった怒りは、どこへ行ったのか。\nあなたが飲み込んだ言葉は、\n誰かの優しさにすり替えられていないか？",
-        question: "いま、誰に対して怒っていることを隠していますか？"
-      },
-      {
-        title: "《喪失》",
-        keywords: "悲しみ／別れ／空白",
-        message: "なくしたものを忘れようとするほど、\nそれは心の奥に居座る。\n本当に必要なのは、“手放し”ではなく“見送り”だったのかもしれない。",
-        question: "あなたが「終わったこと」として封じたものは何ですか？"
-      }
-      // ここに他のカードも追加していけます！
-    ];
+    // ボタンを押したらカードを引く処理
+    document.getElementById('drawButton').addEventListener('click', () => {
+      fetch('data/cards.json')
+        .then(response => response.json())
+        .then(cards => {
+          const oneCard = cards[Math.floor(Math.random() * cards.length)];
+          console.log(oneCard);  // ← 開発中はこれで確認
 
-    function drawCard() {
-      const card = cards[Math.floor(Math.random() * cards.length)];
-      document.getElementById("cardTitle").textContent = card.title;
-      document.getElementById("cardKeywords").textContent = `キーワード：${card.keywords}`;
-      document.getElementById("cardMessage").textContent = card.message;
-      document.getElementById("cardQuestion").textContent = `問い：${card.question}`;
-    }
+          // カードの中身を表示してみよう
+          document.getElementById('card').innerHTML = `
+            <h2>《${oneCard.title}》</h2>
+            <p><strong>キーワード：</strong>${oneCard.keywords}</p>
+            <p>${oneCard.message}</p>
+            <p><strong>問い：</strong>${oneCard.question}</p>
+          `;
+        });
+    });
   </script>
 </body>
 </html>
