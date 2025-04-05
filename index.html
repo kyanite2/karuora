@@ -1,67 +1,31 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>構造観察型オラクル《カルオラ》</title>
-  <style>
-    body {
-      font-family: "游ゴシック", sans-serif;
-      background-color: #f9f4ef;
-      color: #333;
-      text-align: center;
-      padding: 3rem;
-    }
-    .card-box {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin-top: 2rem;
-      display: inline-block;
-      max-width: 500px;
-    }
-    button {
-      padding: 0.8rem 1.5rem;
-      font-size: 1rem;
-      background-color: #333;
-      color: #fff;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-  </style>
-</head>
-<body>
+<button id="drawButton">カードを引く</button>
 
-  <h1>🔮 カルオラ・オラクルカード</h1>
-  <div id="card" class="card-box">
-    <p>カードを引いてください</p>
-  </div>
+<div id="cardDisplay" style="margin-top: 2em;"></div>
 
-  <button id="drawButton">カードを引く</button>
+<script>
+  document.getElementById('drawButton').addEventListener('click', () => {
+    fetch('data/cards.json')
+      .then(response => {
+        if (!response.ok) throw new Error('JSONファイルが見つかりません');
+        return response.json();
+      })
+      .then(cards => {
+        const oneCard = cards[Math.floor(Math.random() * cards.length)];
 
-  <script>
-    document.getElementById('drawButton').addEventListener('click', () => {
-      fetch('data/cards.json')
-        .then(response => {
-          if (!response.ok) throw new Error('JSONファイルが見つかりません');
-          return response.json();
-        })
-        .then(cards => {
-          const oneCard = cards[Math.floor(Math.random() * cards.length)];
-          document.getElementById('card').innerHTML = `
+        const html = `
+          <div style="padding: 1em; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.1); background: #fff; max-width: 500px;">
             <h2>《${oneCard.title}》</h2>
             <p><strong>キーワード：</strong>${oneCard.keywords}</p>
             <p>${oneCard.message}</p>
             <p><strong>問い：</strong>${oneCard.question}</p>
-          `;
-        })
-        .catch(error => {
-          document.getElementById('card').innerHTML = `<p style="color:red;">カードの読み込みに失敗しました：${error.message}</p>`;
-        });
-    });
-  </script>
+            <p><em>カテゴリー：${oneCard.category}</em></p>
+          </div>
+        `;
 
-</body>
-</html>
+        document.getElementById('cardDisplay').innerHTML = html;
+      })
+      .catch(error => {
+        document.getElementById('cardDisplay').textContent = error.message;
+      });
+  });
+</script>
