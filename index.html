@@ -12,14 +12,25 @@
       .then(cards => {
         const oneCard = cards[Math.floor(Math.random() * cards.length)];
 
-        const html = `
-          <div style="padding: 1em; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.1); background: #fff; max-width: 500px;">
-            <h2>${oneCard.title}</h2>
-            <p><strong>キーワード：</strong>${oneCard.keywords}</p>
-            <p>${oneCard.message}</p>
-            <p><strong>問い：</strong>${oneCard.question}</p>
-            <p><em>カテゴリー：${oneCard.category}</em></p>
-          </div>
+       const html = `
+  <div style="
+    max-width: 600px;
+    margin: 3em auto;
+    padding: 2em;
+    border-radius: 1.5em;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    background: #fff;
+    font-family: 'Yu Gothic', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+    line-height: 1.8;
+    color: #222;
+    text-align: left;
+  ">
+    <h2 style="font-size: 1.8em; font-weight: bold; text-align: center;">${oneCard.title}</h2>
+    <p><strong>キーワード：</strong>${oneCard.keywords}</p>
+    <p>${oneCard.message}</p>
+    <p><strong>問い：</strong>${oneCard.question}</p>
+    <p><em>カテゴリー：${oneCard.category}</em></p>
+  </div>
         `;
 
         document.getElementById('cardDisplay').innerHTML = html;
