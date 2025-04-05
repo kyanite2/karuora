@@ -39,18 +39,6 @@
       to { opacity: 1; transform: scale(1.4); }
     }
 
-    /* 流れ星 */
-    .shooting-star {
-      position: absolute;
-      width: 100px;
-      height: 2px;
-      background: linear-gradient(90deg, white, transparent);
-      opacity: 0.8;
-      transform: rotate(45deg);
-      animation: shoot 1s linear forwards;
-      z-index: -1;
-    }
-
     @keyframes shoot {
       from {
         transform: translate(0, 0) rotate(45deg);
