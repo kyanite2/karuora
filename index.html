@@ -155,15 +155,6 @@
       document.body.appendChild(star);
     }
 
-    // 流れ星の生成（定期的）
-    setInterval(() => {
-      const shootingStar = document.createElement('div');
-      shootingStar.classList.add('shooting-star');
-      shootingStar.style.top = `${Math.random() * window.innerHeight}px`;
-      shootingStar.style.left = `${Math.random() * window.innerWidth}px`;
-      document.body.appendChild(shootingStar);
-      setTimeout(() => shootingStar.remove(), 1000);
-    }, 5000);
   </script>
 </body>
 </html>
