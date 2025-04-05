@@ -1,38 +1,61 @@
+<head>
+  <meta charset="UTF-8">
+  <title>カルオラ オラクルカード</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #f7ede2, #fef6e4, #e0fbfc);
+      font-family: 'Hiragino Mincho ProN', serif;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    #cardContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 70vh;
+    }
+
+    #cardDisplay {
+      max-width: 600px;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 2em;
+      border-radius: 1em;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    #buttonContainer {
+      display: flex;
+      justify-content: center;
+      margin: 2em 0;
+    }
+
+    #drawButton {
+      padding: 1em 2em;
+      font-size: 1.1em;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 0.5em;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    #drawButton:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+
+
 <div id="cardContainer"></div>
 
 <div id="buttonContainer">
   <button id="drawButton">カードを引く</button>
 </div>
-
-<style>
-  #buttonContainer {
-    text-align: center;
-    margin-top: 2em;
-  }
-
-  #drawButton {
-    padding: 0.8em 1.6em;
-    font-size: 1.1em;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    cursor: pointer;
-    transition: 0.3s ease;
-  }
-
-  #drawButton:hover {
-    background-color: #555;
-    transform: scale(1.05);
-  }
-
-  #drawButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-</style>
 
 
 <script>
