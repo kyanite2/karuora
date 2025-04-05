@@ -2,11 +2,6 @@
   <meta charset="UTF-8">
   <title>カルオラ オラクルカード</title>
   <style>
-body {
-  background: radial-gradient(circle at center, #1e1f4f, #0d0e2d);
-  color: #333;
-  font-family: 'Hiragino Kaku Gothic ProN', sans-serif;
-}
 
 
     #cardContainer {
@@ -87,7 +82,7 @@ body {
 
 <script>
   const drawButton = document.getElementById('drawButton');
-  drawButton.disabled = true; // 最初は無効化
+  drawButton.disabled = true;
 
   let cards = [];
 
@@ -98,7 +93,7 @@ body {
     })
     .then(data => {
       cards = data;
-      drawButton.disabled = false; // 読み込み完了後にボタンを有効化
+      drawButton.disabled = false;
     });
 
   drawButton.addEventListener('click', () => {
@@ -124,9 +119,7 @@ body {
     document.getElementById('cardContainer').innerHTML = html;
   });
 
-
-  <script>
-  // 星をランダムに生成
+  // ⭐ 星をランダムに生成
   for (let i = 0; i < 100; i++) {
     const star = document.createElement('div');
     star.classList.add('stars');
@@ -135,6 +128,4 @@ body {
     star.style.animationDuration = `${1 + Math.random() * 3}s`;
     document.body.appendChild(star);
   }
-  
 </script>
-
