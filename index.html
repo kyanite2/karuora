@@ -1,6 +1,33 @@
-<button id="drawButton">カードを引く</button>
+<div id="cardContainer"></div>
 
-<div id="cardDisplay" style="margin-top: 2em;"></div>
+<div id="buttonContainer">
+  <button id="drawButton">カードを引く</button>
+</div>
+
+<style>
+  #buttonContainer {
+    text-align: center;
+    margin-top: 2em;
+  }
+
+  #drawButton {
+    padding: 0.8em 1.6em;
+    font-size: 1.1em;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  #drawButton:hover {
+    background-color: #555;
+    transform: scale(1.05);
+  }
+</style>
+
 
 <script>
   document.getElementById('drawButton').addEventListener('click', () => {
