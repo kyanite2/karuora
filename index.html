@@ -52,6 +52,20 @@ html, body {
       }
     }
 
+
+#cardDisplay {
+  /* 既存のスタイルに追加してOK */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#cardDisplay.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+    
     /* カード表示エリア */
     #cardContainer {
       display: flex;
@@ -164,6 +178,12 @@ html, body {
       document.body.appendChild(star);
     }
 
+
+cardDisplay.innerHTML = html;
+cardDisplay.style.display = "block";
+cardDisplay.classList.add("show");
+
+    
   </script>
 </body>
 </html>
