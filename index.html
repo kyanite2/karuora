@@ -45,6 +45,34 @@ body {
     #drawButton:hover {
       transform: scale(1.05);
     }
+
+
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  font-family: 'Hiragino Mincho ProN', serif;
+  color: #eee;
+  overflow: hidden;
+  position: relative;
+}
+
+.stars {
+  width: 2px;
+  height: 2px;
+  background: white;
+  position: absolute;
+  border-radius: 100%;
+  animation: sparkle 2s infinite ease-in-out alternate;
+  opacity: 0.8;
+}
+
+@keyframes sparkle {
+  from { opacity: 0.3; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.4); }
+}
+
+    
   </style>
 </head>
 
@@ -95,4 +123,20 @@ body {
 
     document.getElementById('cardContainer').innerHTML = html;
   });
+
+
+  <script>
+  // 星をランダムに生成
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement('div');
+    star.classList.add('stars');
+    star.style.top = `${Math.random() * 100}%`;
+    star.style.left = `${Math.random() * 100}%`;
+    star.style.animationDuration = `${1 + Math.random() * 3}s`;
+    document.body.appendChild(star);
+  }
+  
+</script>
+
+  
 </script>
