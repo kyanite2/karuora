@@ -1,9 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>カルオラ オラクルカード</title>
   <style>
+    /* ベーススタイルと背景 */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Hiragino Mincho ProN', serif;
+      color: #333;
+      overflow: hidden;
+      position: relative;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    }
 
+    /* 背景レイヤーに銀河やオーロラ画像を追加 */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?fit=crop&w=1600&q=80') center center / cover no-repeat;
+      opacity: 0.15;
+      z-index: -2;
+    }
 
+    /* 星（ランダム配置） */
+    .stars {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: sparkle 2s infinite ease-in-out alternate;
+      opacity: 0.8;
+    }
+
+    @keyframes sparkle {
+      from { opacity: 0.3; transform: scale(1); }
+      to { opacity: 1; transform: scale(1.4); }
+    }
+
+    /* 流れ星 */
+    .shooting-star {
+      position: absolute;
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, white, transparent);
+      opacity: 0.8;
+      transform: rotate(45deg);
+      animation: shoot 1s linear forwards;
+      z-index: -1;
+    }
+
+    @keyframes shoot {
+      from {
+        transform: translate(0, 0) rotate(45deg);
+        opacity: 1;
+      }
+      to {
+        transform: translate(500px, -500px) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    /* カード表示エリア */
     #cardContainer {
       display: flex;
       justify-content: center;
@@ -17,8 +76,10 @@
       padding: 2em;
       border-radius: 1em;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      color: #222;
     }
 
+    /* ボタンの配置とスタイル */
     #buttonContainer {
       display: flex;
       justify-content: center;
@@ -40,92 +101,81 @@
     #drawButton:hover {
       transform: scale(1.05);
     }
-
-
-body {
-  margin: 0;
-  padding: 0;
-  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-  font-family: 'Hiragino Mincho ProN', serif;
-  color: #333;
-  overflow: hidden;
-  position: relative;
-}
-
-.stars {
-  width: 2px;
-  height: 2px;
-  background: white;
-  position: absolute;
-  border-radius: 100%;
-  animation: sparkle 2s infinite ease-in-out alternate;
-  opacity: 0.8;
-}
-
-@keyframes sparkle {
-  from { opacity: 0.3; transform: scale(1); }
-  to { opacity: 1; transform: scale(1.4); }
-}
-
-    
   </style>
 </head>
 
+<body>
+  <div id="cardContainer">
+    <div id="cardDisplay"></div>
+  </div>
 
+  <div id="buttonContainer">
+    <button id="drawButton" disabled>カードを引く</button>
+  </div>
 
-<div id="cardContainer"></div>
+  <script>
+    const drawButton = document.getElementById('drawButton');
+    const cardDisplay = document.getElementById('cardDisplay');
+    let cards = [];
 
-<div id="buttonContainer">
-  <button id="drawButton">カードを引く</button>
-</div>
+    // JSONカードデータを読み込む
+    fetch('data/cards.json')
+      .then(response => {
+        if (!response.ok) throw new Error('カードデータが見つかりません');
+        return response.json();
+      })
+      .then(data => {
+        cards = data;
+        drawButton.disabled = false;
+      });
 
+    // カードを引くボタンイベント
+    drawButton.addEventListener('click', () => {
+      const oneCard = cards[Math.floor(Math.random() * cards.length)];
 
-<script>
-  const drawButton = document.getElementById('drawButton');
-  drawButton.disabled = true;
+      const html = `
+        <div style="
+          max-width: 600px;
+          margin: 3em auto;
+          padding: 2em;
+          border-radius: 1em;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          background: white;
+          color: #222;
+        ">
+          <h2>${oneCard.title}</h2>
+          <p><strong>キーワード：</strong>${oneCard.keywords}</p>
+          <p>${oneCard.message}</p>
+          <p><strong>問い：</strong>${oneCard.question}</p>
+          <p><em>カテゴリー：${oneCard.category}</em></p>
+        </div>
+      `;
 
-  let cards = [];
-
-  fetch('data/cards.json')
-    .then(response => {
-      if (!response.ok) throw new Error('JSONファイルが見つかりません');
-      return response.json();
-    })
-    .then(data => {
-      cards = data;
-      drawButton.disabled = false;
+      cardDisplay.innerHTML = html;
     });
 
-  drawButton.addEventListener('click', () => {
-    const oneCard = cards[Math.floor(Math.random() * cards.length)];
+    // 星の生成
+    for (let i = 0; i < 120; i++) {
+      const star = document.createElement('div');
+      star.classList.add('stars');
+      const size = Math.random() * 2 + 1;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.animationDuration = `${1 + Math.random() * 3}s`;
+      document.body.appendChild(star);
+    }
 
-    const html = `
-      <div style="
-        max-width: 600px;
-        margin: 3em auto;
-        padding: 2em;
-        border-radius: 1em;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        background: white;
-      ">
-        <h2>${oneCard.title}</h2>
-        <p><strong>キーワード：</strong>${oneCard.keywords}</p>
-        <p>${oneCard.message}</p>
-        <p><strong>問い：</strong>${oneCard.question}</p>
-        <p><em>カテゴリー：${oneCard.category}</em></p>
-      </div>
-    `;
-
-    document.getElementById('cardContainer').innerHTML = html;
-  });
-
-  // ⭐ 星をランダムに生成
-  for (let i = 0; i < 100; i++) {
-    const star = document.createElement('div');
-    star.classList.add('stars');
-    star.style.top = `${Math.random() * 100}%`;
-    star.style.left = `${Math.random() * 100}%`;
-    star.style.animationDuration = `${1 + Math.random() * 3}s`;
-    document.body.appendChild(star);
-  }
-</script>
+    // 流れ星の生成（定期的）
+    setInterval(() => {
+      const shootingStar = document.createElement('div');
+      shootingStar.classList.add('shooting-star');
+      shootingStar.style.top = `${Math.random() * window.innerHeight}px`;
+      shootingStar.style.left = `${Math.random() * window.innerWidth}px`;
+      document.body.appendChild(shootingStar);
+      setTimeout(() => shootingStar.remove(), 1000);
+    }, 5000);
+  </script>
+</body>
+</html>
